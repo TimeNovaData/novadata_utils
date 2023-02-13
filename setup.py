@@ -18,6 +18,8 @@ setup(
     install_requires=[
         "django",
         "djangorestframework",
+        "django-advanced-filters",
+        "django-import-export",
     ],
     project_urls={
         "GitHub": "https://github.com/TimeNovaData/novadata_utils/",
