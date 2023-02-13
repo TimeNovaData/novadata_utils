@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: novadata-utils
-Version: 0.0.5
+Version: 0.0.6
 Summary: Django Full CRUD
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
@@ -77,6 +77,21 @@ Exemplo:
 AUTHENTICATION_BACKENDS = [
     "novadata_utils.auth.LoginUsernameEmail",
 ]
+```
+
+### NovadataModelAdmin
+Classe para facilitar a criação de ModelAdmin, implmentando diversas funcionalidades.
+
+Exemplo:
+```python
+from novadata_utils.admin import NovadataModelAdmin
+
+
+class MyAdmin(NovadataModelAdmin):
+    search_fields = [
+        'example1',
+        'example2',
+    ]
 ```
 
 

@@ -64,3 +64,18 @@ AUTHENTICATION_BACKENDS = [
     "novadata_utils.auth.LoginUsernameEmail",
 ]
 ```
+
+### NovadataModelAdmin
+Classe para facilitar a criação de ModelAdmin, implmentando diversas funcionalidades.
+
+Exemplo:
+```python
+from novadata_utils.admin import NovadataModelAdmin
+
+
+class MyAdmin(NovadataModelAdmin):
+    search_fields = [
+        'example1',
+        'example2',
+    ]
+```
