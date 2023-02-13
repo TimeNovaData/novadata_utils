@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from functions import get_prop
+from novadata_utils.functions import get_prop
 from rest_framework import filters, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
