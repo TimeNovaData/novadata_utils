@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: novadata-utils
+Version: 0.0.1
+Summary: Django Full CRUD
+Home-page: https://github.com/TimeNovaData/novadata_utils/
+Author: Flávio Silva
+Author-email: flavio.nogueira.profissional@gmail.com
+License: MIT License
+Project-URL: GitHub, https://github.com/TimeNovaData/novadata_utils/
+Keywords: Django,CRUD
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# pacotepypi
+Example of PyPI package.
+## Getting Started
+#### Dependencies
+You need Python 3.7 or later to use **pacotepypi**. You can find it at [python.org](https://www.python.org/).
+You also need setuptools, wheel and twine packages, which is available from [PyPI](https://pypi.org). If you have pip, just run:
+
+```shell
+pip install setuptools
+pip install wheel
+pip install twine
+```
+#### Installation
+Clone this repo to your local machine using:
+
+```
+git clone https://github.com/caiocarneloz/pacotepypi.git
+```
+## Features
+- File structure for PyPI packages
+- Setup with package informations
+- License example
+
+
