@@ -57,7 +57,24 @@ props_dict = {
 }
 
 
-def get_prop(model, prop, str=True):
+def get_prop(model, prop, str=False):
+    """
+    Retorna uma lista de campos de um model baseado em uma propriedade.
+    Exemplo:
+        get_prop(model, "list_display") retorna todos os campos que podem ser
+        exibidos na listagem do admin. Que são: 
+            "BigAutoField",
+            "BooleanField",
+            "CharField",
+            "DateField",
+            "DateTimeField",
+            "DecimalField",
+            "ForeignKey",
+            "IntegerField" e
+            "PositiveIntegerField".
+    
+    """
+    
     props = []
     fields = model._meta.get_fields()
     for field in fields:
