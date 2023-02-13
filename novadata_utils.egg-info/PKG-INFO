@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: novadata-utils
-Version: 0.0.2
+Version: 0.0.3
 Summary: Django Full CRUD
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
@@ -12,27 +12,64 @@ Platform: UNKNOWN
 Description-Content-Type: text/markdown
 License-File: LICENSE
 
-# pacotepypi
-Example of PyPI package.
+# novadata utils
+Pacote para facilitar o seu dia a dia como programador Django.
+
 ## Getting Started
-#### Dependencies
-You need Python 3.7 or later to use **pacotepypi**. You can find it at [python.org](https://www.python.org/).
-You also need setuptools, wheel and twine packages, which is available from [PyPI](https://pypi.org). If you have pip, just run:
+#### Dependências
+Django
+Django Rest Framework
 
-```shell
-pip install setuptools
-pip install wheel
-pip install twine
-```
+
+
+
 #### Installation
-Clone this repo to your local machine using:
+```shell
+pip install novadata-utils
+```
 
+Settings.py:
+```python
+INSTALLED_APPS = [
+    ...
+    'novadata_utils',
+    ...
+]
 ```
-git clone https://github.com/caiocarneloz/pacotepypi.git
-```
+
+
 ## Features
-- File structure for PyPI packages
-- Setup with package informations
-- License example
+- NovadataModelViewSet, classe que implementa o create e o update para o ModelViewSet do Django Rest Framework
+### Usage
+```python
+from novadata_utils.viewsets import NovadataModelViewSet
+
+
+class MyViewSet(NovadataModelViewSet):
+    queryset = MyModel.objects.all()
+    serializer_class = MySerializer
+```
+
+
+- NovadataModelSerializer, classe que traz a serialização de todos os seus objetos necessários para o front-end
+### Usage
+```python
+from novadata_utils.serializers import NovadataModelSerializer
+
+
+class MySerializer(NovadataModelSerializer):
+    class Meta:
+        model = MyModel
+        fields = '__all__'
+```
+
+- LoginUsernameEmail, classe para realizar autenticação com username ou email
+### Usage
+```python
+# settings.py
+AUTHENTICATION_BACKENDS = [
+    "novadata_utils.auth.LoginUsernameEmail",
+]
+```
 
 
