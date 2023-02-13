@@ -14,6 +14,8 @@ novadata_utils/admin/novadata_model_admin.py
 novadata_utils/auth/__init__.py
 novadata_utils/auth/login_username_email.py
 novadata_utils/forms/__init__.py
+novadata_utils/functions/__init__.py
+novadata_utils/functions/get_prop.py
 novadata_utils/managers/__init__.py
 novadata_utils/middlewares/__init__.py
 novadata_utils/migrations/__init__.py
