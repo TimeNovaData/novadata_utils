@@ -25,8 +25,10 @@ INSTALLED_APPS = [
 
 
 ## Features
-- NovadataModelViewSet, classe que implementa o create e o update para o ModelViewSet do Django Rest Framework
-### Usage
+### NovadataModelViewSet
+Classe que implementa o create e o update para o ModelViewSet do Django Rest Framework
+
+Exemplo:
 ```python
 from novadata_utils.viewsets import NovadataModelViewSet
 
@@ -37,8 +39,11 @@ class MyViewSet(NovadataModelViewSet):
 ```
 
 
-- NovadataModelSerializer, classe que traz a serialização de todos os seus objetos necessários para o front-end
-### Usage
+### NovadataModelSerializer
+Classe que traz a serialização de todos os seus objetos necessários para o front-end.
+
+Exemplo:
+
 ```python
 from novadata_utils.serializers import NovadataModelSerializer
 
@@ -49,8 +54,10 @@ class MySerializer(NovadataModelSerializer):
         fields = '__all__'
 ```
 
-- LoginUsernameEmail, classe para realizar autenticação com username ou email
-### Usage
+### LoginUsernameEmail
+Classe para realizar autenticação com username ou email
+
+Exemplo:
 ```python
 # settings.py
 AUTHENTICATION_BACKENDS = [
