@@ -16,8 +16,10 @@ novadata_utils/middlewares/__init__.py
 novadata_utils/migrations/__init__.py
 novadata_utils/models/__init__.py
 novadata_utils/serializers/__init__.py
+novadata_utils/serializers/novadata_model_serializer.py
 novadata_utils/signals/__init__.py
 novadata_utils/templatetags/__init__.py
 novadata_utils/tests/__init__.py
 novadata_utils/views/__init__.py
 novadata_utils/viewsets/__init__.py
+novadata_utils/viewsets/novadata_model_viewset.py
