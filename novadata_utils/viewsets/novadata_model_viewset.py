@@ -21,7 +21,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     ordering_fields: list = []
 
     search_fields: list = []
-    
+
     auto_search_fields: bool = False
 
     relation_fields = [
@@ -31,33 +31,33 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
     def get_filterset_fields(self):
         model = self.serializer_class().Meta.model
-        self.filterset_fields = get_prop(
+        filterset_fields = get_prop(
             model,
             "filterset_fields",
             str=False,
         )
 
-        return self.filterset_fields
+        return filterset_fields
 
     def get_ordering_fields(self):
         model = self.serializer_class().Meta.model
-        self.ordering_fields = get_prop(
+        ordering_fields = get_prop(
             model,
             "ordering_fields",
             str=False,
         )
 
-        return self.ordering_fields
+        return ordering_fields
 
     def get_search_fields(self):
         model = self.serializer_class().Meta.model
-        self.search_fields = get_prop(
+        search_fields = get_prop(
             model,
             "search_fields",
             str=False,
         )
 
-        return self.search_fields
+        return search_fields
 
     def get_fk_fields(self):
         model = self.serializer_class().Meta.model
@@ -138,7 +138,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.get_filterset_fields()
-        self.get_ordering_fields()
+        self.filterset_fields = self.get_filterset_fields()
+        self.ordering_fields = self.get_ordering_fields()
         if self.auto_search_fields:
-            self.get_search_fields()
+            self.search_fields = self.get_search_fields()
