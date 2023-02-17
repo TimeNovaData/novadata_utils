@@ -1,13 +1,13 @@
 Metadata-Version: 2.1
 Name: novadata-utils
-Version: 0.0.6
-Summary: Django Full CRUD
+Version: 0.1
+Summary: novadata utils
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
 Author-email: flavio.nogueira.profissional@gmail.com
 License: MIT License
 Project-URL: GitHub, https://github.com/TimeNovaData/novadata_utils/
-Keywords: Django,CRUD
+Keywords: Django,utils,ndt,novadata,nova data,nova,data
 Platform: UNKNOWN
 Description-Content-Type: text/markdown
 License-File: LICENSE
