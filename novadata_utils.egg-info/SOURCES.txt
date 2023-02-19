@@ -20,6 +20,9 @@ novadata_utils/managers/__init__.py
 novadata_utils/middlewares/__init__.py
 novadata_utils/migrations/__init__.py
 novadata_utils/models/__init__.py
+novadata_utils/models/novadata_model.py
+novadata_utils/redirect/__init__.py
+novadata_utils/redirect/reverse_lazy_plus.py
 novadata_utils/serializers/__init__.py
 novadata_utils/serializers/novadata_model_serializer.py
 novadata_utils/signals/__init__.py
