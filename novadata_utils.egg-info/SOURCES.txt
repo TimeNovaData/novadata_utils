@@ -23,6 +23,9 @@ novadata_utils/models/__init__.py
 novadata_utils/models/novadata_model.py
 novadata_utils/redirect/__init__.py
 novadata_utils/redirect/reverse_lazy_plus.py
+novadata_utils/save/__init__.py
+novadata_utils/save/create_logs.py
+novadata_utils/save/get_changes.py
 novadata_utils/serializers/__init__.py
 novadata_utils/serializers/novadata_model_serializer.py
 novadata_utils/signals/__init__.py

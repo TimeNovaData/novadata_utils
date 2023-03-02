@@ -5,10 +5,20 @@ from django.db.models import Q
 
 class LoginUsernameEmail(ModelBackend):
     def authenticate(self, request, **kwargs):
+        """Função para autenticar o usuário."""
         try:
-            user = get_user_model().objects.get(
-                Q(username=kwargs["username"]) | Q(email=kwargs["username"])
+            user = (
+                get_user_model()
+                .objects.filter(
+                    Q(username=kwargs["username"])
+                    | Q(email=kwargs["username"])
+                )
+                .first()
             )
-            return user if user.check_password(kwargs["password"]) else None
+            return (
+                user
+                if user and user.check_password(kwargs["password"])
+                else None
+            )
         except KeyError:
             return None
