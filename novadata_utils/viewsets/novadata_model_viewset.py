@@ -16,11 +16,11 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         filters.OrderingFilter,
     ]
 
-    filterset_fields: list = []
+    filterset_fields: list = None
 
-    ordering_fields: list = []
+    ordering_fields: list = None
 
-    search_fields: list = []
+    search_fields: list = None
 
     auto_search_fields: bool = False
 
@@ -97,14 +97,15 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     def update(self, request, *args, **kwargs):
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
+        data = request.data.copy()
 
         obj_datas = {}
         for field in self.get_fk_fields():
             field_name = field[0]
-            obj_datas[field_name] = request.data.pop(
+            obj_datas[field_name] = data.pop(
                 field_name,
-                None,
-            )
+                [None],
+            )[0]
 
         serializer = self.get_serializer(
             instance,
@@ -138,7 +139,11 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.filterset_fields = self.get_filterset_fields()
-        self.ordering_fields = self.get_ordering_fields()
-        if self.auto_search_fields:
+        if not self.filterset_fields:
+            self.filterset_fields = self.get_filterset_fields()
+
+        if not self.ordering_fields:
+            self.ordering_fields = self.get_ordering_fields()
+
+        if self.auto_search_fields and not self.search_fields:
             self.search_fields = self.get_search_fields()
