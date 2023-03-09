@@ -104,19 +104,19 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         """Realiza o update de um objeto."""
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
-        data = request.data.copy()
+        data = self.get_data(request)
 
         obj_datas = {}
         for field in self.get_fk_fields():
             field_name = field[0]
             obj_datas[field_name] = data.pop(
                 field_name,
-                [None],
-            )[0]
+                None,
+            )
 
         serializer = self.get_serializer(
             instance,
-            data=request.data,
+            data=data,
             partial=partial,
         )
         serializer.is_valid(raise_exception=True)
@@ -132,6 +132,8 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
                         fk_instance = model.objects.get(
                             pk=obj_data.get("id", None)
                         )
+                    elif isinstance(obj_data, list):
+                        fk_instance = model.objects.get(pk=obj_data[0])
                     else:
                         fk_instance = model.objects.get(pk=obj_data)
 
