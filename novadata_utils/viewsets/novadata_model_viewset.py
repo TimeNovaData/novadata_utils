@@ -109,7 +109,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         obj_datas = {}
         for field in self.get_fk_fields():
             field_name = field[0]
-            obj_datas[field_name] = data.pop(
+            obj_datas[field_name] = data.get(
                 field_name,
                 None,
             )
