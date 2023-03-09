@@ -16,7 +16,19 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
+    'advanced_filters',
+    'import_export',
     'novadata_utils',
+    'rest_framework',
+    ...
+]
+```
+
+Urls.py:
+```python
+urlpatterns = [
+    ...
+    path("advanced_filters/", include("advanced_filters.urls")),
     ...
 ]
 ```
