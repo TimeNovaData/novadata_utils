@@ -1,5 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from novadata_utils.functions import get_prop
+from global_functions.utils import get_prop
 from rest_framework import filters, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -30,36 +30,40 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     ]
 
     def get_filterset_fields(self):
+        """Retorna os campos de filtro."""
         model = self.serializer_class().Meta.model
-        filterset_fields = get_prop(
+        self.filterset_fields = get_prop(
             model,
             "filterset_fields",
             str=False,
         )
 
-        return filterset_fields
+        return self.filterset_fields
 
     def get_ordering_fields(self):
+        """Retorna os campos de ordenação."""
         model = self.serializer_class().Meta.model
-        ordering_fields = get_prop(
+        self.ordering_fields = get_prop(
             model,
             "ordering_fields",
             str=False,
         )
 
-        return ordering_fields
+        return self.ordering_fields
 
     def get_search_fields(self):
+        """Retorna os campos de busca."""
         model = self.serializer_class().Meta.model
-        search_fields = get_prop(
+        self.search_fields = get_prop(
             model,
             "search_fields",
             str=False,
         )
 
-        return search_fields
+        return self.search_fields
 
     def get_fk_fields(self):
+        """Retorna os campos de relacionamento."""
         model = self.serializer_class().Meta.model
         fields = model._meta.get_fields()
         fk_fields = [
@@ -71,6 +75,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         return fk_fields
 
     def get_data(self, request):
+        """Retorna os dados da requisição de forma tratada."""
         data = request.data.copy()
         for fk_field in self.get_fk_fields():
             field_name = fk_field[0]
@@ -86,6 +91,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         return data
 
     def create(self, request, *args, **kwargs):
+        """Realiza o create de um objeto."""
         serializer = self.get_serializer(data=self.get_data(request))
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
@@ -95,6 +101,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         )
 
     def update(self, request, *args, **kwargs):
+        """Realiza o update de um objeto."""
         partial = kwargs.pop("partial", False)
         instance = self.get_object()
         data = request.data.copy()
@@ -138,12 +145,13 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def __init__(self, **kwargs) -> None:
+        """Método para executarmos ações ao iniciar a classe."""
         super().__init__(**kwargs)
         if not self.filterset_fields:
-            self.filterset_fields = self.get_filterset_fields()
+            self.get_filterset_fields()
 
         if not self.ordering_fields:
-            self.ordering_fields = self.get_ordering_fields()
+            self.get_ordering_fields()
 
         if self.auto_search_fields and not self.search_fields:
-            self.search_fields = self.get_search_fields()
+            self.get_search_fields()
