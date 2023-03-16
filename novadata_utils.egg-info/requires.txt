@@ -1,4 +1,4 @@
 django
-django-advanced-filters
 django-import-export
+django-object-ations
 djangorestframework
