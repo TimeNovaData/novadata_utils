@@ -33,5 +33,10 @@ urlpatterns = [
 ]
 ```
 
+Rode os seguintes comandos:
+```python
+python manage.py makemigrations
+python manage.py migrate
+```
 
 ## Features
