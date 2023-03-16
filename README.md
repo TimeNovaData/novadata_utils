@@ -16,7 +16,7 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
-    'advanced_filters',
+    'django_object_actions',
     'import_export',
     'novadata_utils',
     'rest_framework',

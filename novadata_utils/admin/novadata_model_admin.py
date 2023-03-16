@@ -1,12 +1,12 @@
-from advanced_filters.admin import AdminAdvancedFiltersMixin
 from django.contrib import admin
+from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
 from novadata_utils.functions import get_prop
 
 
 class NovadataModelAdmin(
     ImportExportModelAdmin,
-    AdminAdvancedFiltersMixin,
+    DjangoObjectActions,
     admin.ModelAdmin,
 ):
     """

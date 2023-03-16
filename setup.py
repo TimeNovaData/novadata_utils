@@ -18,7 +18,7 @@ setup(
     install_requires=[
         "django",
         "djangorestframework",
-        "django-advanced-filters",
+        "django-object-ations",
         "django-import-export",
     ],
     project_urls={
