@@ -18,6 +18,7 @@ novadata_utils/functions/__init__.py
 novadata_utils/functions/get_prop.py
 novadata_utils/managers/__init__.py
 novadata_utils/middlewares/__init__.py
+novadata_utils/migrations/0001_initial.py
 novadata_utils/migrations/__init__.py
 novadata_utils/models/__init__.py
 novadata_utils/models/novadata_model.py
