@@ -23,6 +23,8 @@ INSTALLED_APPS = [
     'rest_framework',
     ...
 ]
+
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
 
 Urls.py:
