@@ -31,6 +31,9 @@ props_dict = {
     "autocomplete_fields": [
         "ForeignKey",
     ],
+    "list_select_related": [
+        "ForeignKey",
+    ],
     "filter_horizontal": [
         "ManyToManyField",
     ],

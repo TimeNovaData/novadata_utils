@@ -28,6 +28,8 @@ class NovadataModelAdmin(
 
     autocomplete_fields: list = []
 
+    list_select_related: list = []
+
     auto_search_fields: bool = False
 
     filter_horizontal: list = []
@@ -81,6 +83,18 @@ class NovadataModelAdmin(
             return autocomplete_fields
         else:
             return self.autocomplete_fields
+
+    def get_list_select_related(self, request):
+        """Retorna a lista de campos que estarão no select_related."""
+        super().get_list_select_related(request)
+
+        if not self.list_select_related:
+            model = self.model
+            list_select_related = get_prop(model, "list_select_related")
+
+            return list_select_related
+        else:
+            return self.list_select_related
 
     def get_filter_horizontal(self):
         """Retorna a lista de campos que estarão no filtro horizontal."""
