@@ -6,8 +6,8 @@ from novadata_utils.functions import get_prop
 
 
 class NovadataModelAdmin(
-    ImportExportModelAdmin,
     DjangoObjectActions,
+    ImportExportModelAdmin,
     admin.ModelAdmin,
 ):
     """
