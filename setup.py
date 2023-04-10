@@ -18,8 +18,9 @@ setup(
     install_requires=[
         "django",
         "djangorestframework",
-        "django-object-actions>=4.0.0",
+        "django-admin-list-filter-dropdown",
         "django-import-export",
+        "django-object-actions>=4.0.0",
     ],
     project_urls={
         "GitHub": "https://github.com/TimeNovaData/novadata_utils/",

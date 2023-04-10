@@ -16,6 +16,7 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
+    'django-admin-list-filter-dropdown',
     'django_object_actions',
     'import_export',
     'novadata_utils',
