@@ -1,3 +1,5 @@
+from novadata_utils.models import NovadataModel
+
 props_dict = {
     # Admin props
     "list_display": [
@@ -36,6 +38,9 @@ props_dict = {
     "foreign_keys": [
         "ForeignKey",
     ],
+    "many_to_many": [
+        "ManyToManyField",
+    ],
     # Viewset props
     "filterset_fields": [
         "BooleanField",
@@ -57,12 +62,35 @@ props_dict = {
 }
 
 
+def get_fields(model):
+    """get_fields personalizado."""
+    parents = model._meta.parents
+    if parents:
+        first_parent = next(iter(parents))
+        is_subclass = issubclass(NovadataModel, first_parent)
+
+        if is_subclass:
+            super_fields_whinout_id = list(first_parent._meta.fields)[1:]
+            fields = list(model._meta.get_fields())
+            duplicated_fields = filter(
+                lambda field: field in super_fields_whinout_id,
+                super_fields_whinout_id,
+            )
+            list(map(lambda field: fields.remove(field), duplicated_fields))
+
+            new_fields = fields + super_fields_whinout_id
+            return new_fields
+
+    return model._meta.get_fields()
+
+
 def get_prop(model, prop, str=False):
     """
     Retorna uma lista de campos de um model baseado em uma propriedade.
+
     Exemplo:
         get_prop(model, "list_display") retorna todos os campos que podem ser
-        exibidos na listagem do admin. Que são: 
+        exibidos na listagem do admin. Que são:
             "BigAutoField",
             "BooleanField",
             "CharField",
@@ -72,11 +100,9 @@ def get_prop(model, prop, str=False):
             "ForeignKey",
             "IntegerField" e
             "PositiveIntegerField".
-    
     """
-    
     props = []
-    fields = model._meta.get_fields()
+    fields = get_fields(model)
     for field in fields:
         field_type = field.get_internal_type()
         is_original_field = not hasattr(field, "field")

@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="novadata_utils",
-    version="0.2",
+    version="0.2.1.1",
     url="https://github.com/TimeNovaData/novadata_utils/",
     license="MIT License",
     author="Flávio Silva",
@@ -18,7 +18,7 @@ setup(
     install_requires=[
         "django",
         "djangorestframework",
-        "django-object-actions",
+        "django-object-actions>=4.0.0",
         "django-import-export",
     ],
     project_urls={
