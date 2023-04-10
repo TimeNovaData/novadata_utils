@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django_admin_listfilter_dropdown.filters import RelatedOnlyDropdownFilter
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
 
@@ -66,7 +67,17 @@ class NovadataModelAdmin(
 
         if not self.list_filter:
             model = self.model
-            list_filter = get_prop(model, "list_filter")
+            fk_fields = get_prop(model, "foreign_keys")
+            list_filter_fields = get_prop(model, "list_filter")
+
+            list_filter = list(
+                map(
+                    lambda field: (field, RelatedOnlyDropdownFilter)
+                    if field in fk_fields
+                    else field,
+                    list_filter_fields,
+                )
+            )
 
             return list_filter
         else:
