@@ -32,7 +32,7 @@ class NovadataModelAdmin(
 
     list_select_related: list = []
 
-    auto_search_fields: bool = False
+    auto_search_fields: bool = True
 
     filter_horizontal: list = []
 
