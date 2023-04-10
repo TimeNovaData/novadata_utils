@@ -67,13 +67,13 @@ class NovadataModelAdmin(
 
         if not self.list_filter:
             model = self.model
-            fk_fields = get_prop(model, "foreign_keys")
+            foreign_keys = get_prop(model, "foreign_keys")
             list_filter_fields = get_prop(model, "list_filter")
 
             list_filter = list(
                 map(
                     lambda field: (field, RelatedOnlyDropdownFilter)
-                    if field in fk_fields
+                    if field in foreign_keys
                     else field,
                     list_filter_fields,
                 )

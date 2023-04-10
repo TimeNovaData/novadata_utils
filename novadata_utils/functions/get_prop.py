@@ -1,5 +1,6 @@
 from novadata_utils.models import NovadataModel
 
+# ChoicesField é um CharField com choices
 props_dict = {
     # Admin props
     "list_display": [
@@ -12,7 +13,7 @@ props_dict = {
         "ForeignKey",
         "IntegerField",
         "PositiveIntegerField",
-        "ChoicesField",  # ChoicesField é um CharField com choices
+        "ChoicesField",
     ],
     "search_fields": [
         "BigAutoField",
@@ -22,14 +23,14 @@ props_dict = {
         "DecimalField",
         "IntegerField",
         "PositiveIntegerField",
-        "ChoicesField",  # ChoicesField é um CharField com choices
+        "ChoicesField",
     ],
     "list_filter": [
         "BooleanField",
         "DateField",
         "DateTimeField",
         "ForeignKey",
-        "ChoicesField",  # ChoicesField é um CharField com choices
+        "ChoicesField",
     ],
     "autocomplete_fields": [
         "ForeignKey",
@@ -53,7 +54,7 @@ props_dict = {
         "DateField",
         "DateTimeField",
         "ForeignKey",
-        "ChoicesField",  # ChoicesField é um CharField com choices
+        "ChoicesField",
     ],
     "ordering_fields": [
         "BigAutoField",
@@ -65,7 +66,11 @@ props_dict = {
         "PositiveIntegerField",
         "BooleanField",
         "ForeignKey",
-        "ChoicesField",  # ChoicesField é um CharField com choices
+        "ChoicesField",
+    ],
+    # Especific props
+    "choices_fields": [
+        "ChoicesField",
     ],
 }
 
@@ -92,6 +97,21 @@ def get_fields(model):
     return model._meta.get_fields()
 
 
+def get_field_type(field):
+    """Retorna o tipo de um campo."""
+    field_type = field.get_internal_type()
+    is_choices = (
+        hasattr(field, "choices")
+        and field.choices
+        and field_type == "CharField"
+    )
+
+    if is_choices:
+        field_type = "ChoicesField"
+
+    return field_type
+
+
 def get_prop(model, prop, str=False):
     """
     Retorna uma lista de campos de um model baseado em uma propriedade.
@@ -112,15 +132,7 @@ def get_prop(model, prop, str=False):
     props = []
     fields = get_fields(model)
     for field in fields:
-        field_type = field.get_internal_type()
-        is_choices = (
-            hasattr(field, "choices")
-            and field.choices
-            and field_type == "CharField"
-        )
-
-        if is_choices:
-            field_type = "ChoicesField"
+        field_type = get_field_type(field)
 
         is_original_field = not hasattr(field, "field")
         if field_type in props_dict[prop] and is_original_field:
