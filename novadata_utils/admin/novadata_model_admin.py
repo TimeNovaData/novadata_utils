@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
+
 from novadata_utils.functions import get_prop
 
 
@@ -30,6 +31,8 @@ class NovadataModelAdmin(
     auto_search_fields: bool = False
 
     filter_horizontal: list = []
+
+    exclude: list = []
 
     def get_list_display(self, request):
         """Retorna a lista de campos que estarão na listagem."""
@@ -88,6 +91,19 @@ class NovadataModelAdmin(
             return filter_horizontal
         else:
             return self.filter_horizontal
+
+    def get_exclude(self, request, obj=None):
+        """Retorna a lista de campos que estarão no exclude."""
+        exclude_fields = [super().get_exclude(request, obj)]
+        exclude_fields += self.exclude
+        exclude_fields += [
+            "usuario_criacao",
+            "usuario_atualizacao",
+            "created_by",
+            "updated_by",
+        ]
+
+        return exclude_fields
 
     def __init__(self, *args, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""
