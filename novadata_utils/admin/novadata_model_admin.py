@@ -1,5 +1,10 @@
+from functools import partial
+
 from django.contrib import admin
-from django_admin_listfilter_dropdown.filters import RelatedOnlyDropdownFilter
+from django_admin_listfilter_dropdown.filters import (
+    ChoiceDropdownFilter,
+    RelatedOnlyDropdownFilter,
+)
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
 
@@ -68,16 +73,23 @@ class NovadataModelAdmin(
         if not self.list_filter:
             model = self.model
             foreign_keys = get_prop(model, "foreign_keys")
+            choices_fields = get_prop(model, "choices_fields")
+
             list_filter_fields = get_prop(model, "list_filter")
 
-            list_filter = list(
-                map(
-                    lambda field: (field, RelatedOnlyDropdownFilter)
-                    if field in foreign_keys
-                    else field,
-                    list_filter_fields,
-                )
+            transform_foreign_keys = partial(
+                transform_field,
+                foreign_keys,
+                "foreign_keys",
             )
+            transform_choices_fields = partial(
+                transform_field,
+                choices_fields,
+                "choices_fields",
+            )
+
+            list_filter = list(map(transform_foreign_keys, list_filter_fields))
+            list_filter = list(map(transform_choices_fields, list_filter))
 
             return list_filter
         else:
@@ -134,3 +146,14 @@ class NovadataModelAdmin(
         """Método para executarmos ações ao iniciar a classe."""
         super().__init__(*args, **kwargs)
         self.filter_horizontal = self.get_filter_horizontal()
+
+
+filters = {
+    "foreign_keys": RelatedOnlyDropdownFilter,
+    "choices_fields": ChoiceDropdownFilter,
+}
+
+
+def transform_field(list_of_fields, prop, field):
+    """Transforma um field em um filtro de acordo com a propriedade."""
+    return (field, filters[prop]) if field in list_of_fields else field
