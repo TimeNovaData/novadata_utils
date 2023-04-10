@@ -12,6 +12,7 @@ props_dict = {
         "ForeignKey",
         "IntegerField",
         "PositiveIntegerField",
+        "ChoicesField",  # ChoicesField é um CharField com choices
     ],
     "search_fields": [
         "BigAutoField",
@@ -21,12 +22,14 @@ props_dict = {
         "DecimalField",
         "IntegerField",
         "PositiveIntegerField",
+        "ChoicesField",  # ChoicesField é um CharField com choices
     ],
     "list_filter": [
         "BooleanField",
         "DateField",
         "DateTimeField",
         "ForeignKey",
+        "ChoicesField",  # ChoicesField é um CharField com choices
     ],
     "autocomplete_fields": [
         "ForeignKey",
@@ -50,6 +53,7 @@ props_dict = {
         "DateField",
         "DateTimeField",
         "ForeignKey",
+        "ChoicesField",  # ChoicesField é um CharField com choices
     ],
     "ordering_fields": [
         "BigAutoField",
@@ -61,6 +65,7 @@ props_dict = {
         "PositiveIntegerField",
         "BooleanField",
         "ForeignKey",
+        "ChoicesField",  # ChoicesField é um CharField com choices
     ],
 }
 
@@ -108,8 +113,16 @@ def get_prop(model, prop, str=False):
     fields = get_fields(model)
     for field in fields:
         field_type = field.get_internal_type()
-        is_original_field = not hasattr(field, "field")
+        is_choices = (
+            hasattr(field, "choices")
+            and field.choices
+            and field_type == "CharField"
+        )
 
+        if is_choices:
+            field_type = "ChoicesField"
+
+        is_original_field = not hasattr(field, "field")
         if field_type in props_dict[prop] and is_original_field:
             if str:
                 field_str = f'"{field.name}",'
