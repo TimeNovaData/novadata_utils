@@ -1,12 +1,15 @@
+from functools import partial
+
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
-from novadata_utils.functions import get_prop
+
+from novadata_utils.functions import get_prop, transform_field
 
 
 class NovadataModelAdmin(
-    ImportExportModelAdmin,
     DjangoObjectActions,
+    ImportExportModelAdmin,
     admin.ModelAdmin,
 ):
     """
@@ -27,9 +30,13 @@ class NovadataModelAdmin(
 
     autocomplete_fields: list = []
 
-    auto_search_fields: bool = False
+    list_select_related: list = []
+
+    auto_search_fields: bool = True
 
     filter_horizontal: list = []
+
+    exclude: list = []
 
     def get_list_display(self, request):
         """Retorna a lista de campos que estarão na listagem."""
@@ -61,7 +68,24 @@ class NovadataModelAdmin(
 
         if not self.list_filter:
             model = self.model
-            list_filter = get_prop(model, "list_filter")
+            foreign_keys = get_prop(model, "foreign_keys")
+            choices_fields = get_prop(model, "choices_fields")
+
+            list_filter_fields = get_prop(model, "list_filter")
+
+            transform_foreign_keys = partial(
+                transform_field,
+                foreign_keys,
+                "foreign_keys",
+            )
+            transform_choices_fields = partial(
+                transform_field,
+                choices_fields,
+                "choices_fields",
+            )
+
+            list_filter = list(map(transform_foreign_keys, list_filter_fields))
+            list_filter = list(map(transform_choices_fields, list_filter))
 
             return list_filter
         else:
@@ -79,6 +103,18 @@ class NovadataModelAdmin(
         else:
             return self.autocomplete_fields
 
+    def get_list_select_related(self, request):
+        """Retorna a lista de campos que estarão no select_related."""
+        super().get_list_select_related(request)
+
+        if not self.list_select_related:
+            model = self.model
+            list_select_related = get_prop(model, "list_select_related")
+
+            return list_select_related
+        else:
+            return self.list_select_related
+
     def get_filter_horizontal(self):
         """Retorna a lista de campos que estarão no filtro horizontal."""
         if not self.filter_horizontal:
@@ -88,6 +124,19 @@ class NovadataModelAdmin(
             return filter_horizontal
         else:
             return self.filter_horizontal
+
+    def get_exclude(self, request, obj=None):
+        """Retorna a lista de campos que estarão no exclude."""
+        exclude_fields = [super().get_exclude(request, obj)]
+        exclude_fields += self.exclude
+        exclude_fields += [
+            "usuario_criacao",
+            "usuario_atualizacao",
+            "created_by",
+            "updated_by",
+        ]
+
+        return exclude_fields
 
     def __init__(self, *args, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""
