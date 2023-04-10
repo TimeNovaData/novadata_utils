@@ -1,14 +1,10 @@
 from functools import partial
 
 from django.contrib import admin
-from django_admin_listfilter_dropdown.filters import (
-    ChoiceDropdownFilter,
-    RelatedOnlyDropdownFilter,
-)
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportModelAdmin
 
-from novadata_utils.functions import get_prop
+from novadata_utils.functions import get_prop, transform_field
 
 
 class NovadataModelAdmin(
@@ -146,14 +142,3 @@ class NovadataModelAdmin(
         """Método para executarmos ações ao iniciar a classe."""
         super().__init__(*args, **kwargs)
         self.filter_horizontal = self.get_filter_horizontal()
-
-
-filters = {
-    "foreign_keys": RelatedOnlyDropdownFilter,
-    "choices_fields": ChoiceDropdownFilter,
-}
-
-
-def transform_field(list_of_fields, prop, field):
-    """Transforma um field em um filtro de acordo com a propriedade."""
-    return (field, filters[prop]) if field in list_of_fields else field
