@@ -27,15 +27,6 @@ INSTALLED_APPS = [
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
 
-Urls.py:
-```python
-urlpatterns = [
-    ...
-    path("advanced_filters/", include("advanced_filters.urls")),
-    ...
-]
-```
-
 Rode os seguintes comandos:
 ```python
 python manage.py makemigrations
