@@ -3,7 +3,7 @@ from rest_framework import filters, status, viewsets
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from novadata_utils.functions import get_prop
+from novadata_utils.functions import get_prop, props_dict
 
 
 class NovadataModelViewSet(viewsets.ModelViewSet):
@@ -33,13 +33,21 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     def get_filterset_fields(self):
         """Retorna os campos de filtro."""
         model = self.serializer_class().Meta.model
-        filterset_fields = get_prop(
+        list_filterset_fields = get_prop(
             model,
             "filterset_fields",
-            str=False,
+            annotate_type=True,
         )
 
-        return filterset_fields
+        dict_filterset_fields = {}
+        for filterset_field in list_filterset_fields:
+            name = filterset_field["name"]
+            type = filterset_field["type"]
+
+            sub_props = props_dict.get(type, [])
+            dict_filterset_fields[name] = sub_props
+
+        return dict_filterset_fields
 
     def get_ordering_fields(self):
         """Retorna os campos de ordenação."""
@@ -47,7 +55,6 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         ordering_fields = get_prop(
             model,
             "ordering_fields",
-            str=False,
         )
 
         return ordering_fields
@@ -55,13 +62,21 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     def get_search_fields(self):
         """Retorna os campos de busca."""
         model = self.serializer_class().Meta.model
-        search_fields = get_prop(
+        list_search_fields = get_prop(
             model,
             "search_fields",
-            str=False,
+            annotate_type=True,
         )
 
-        return search_fields
+        dict_search_fields = {}
+        for search_field in list_search_fields:
+            name = search_field["name"]
+            type = search_field["type"]
+
+            sub_props = props_dict.get(type, [])
+            dict_search_fields[name] = sub_props
+
+        return dict_search_fields
 
     def get_fk_fields(self):
         """Retorna os campos de relacionamento."""

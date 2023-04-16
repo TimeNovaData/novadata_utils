@@ -50,11 +50,16 @@ props_dict = {
     ],
     # Viewset props
     "filterset_fields": [
+        "BigAutoField",
+        "CharField",
+        "DecimalField",
+        "IntegerField",
+        "PositiveIntegerField",
+        "ChoicesField",
         "BooleanField",
         "DateField",
         "DateTimeField",
         "ForeignKey",
-        "ChoicesField",
     ],
     "ordering_fields": [
         "BigAutoField",
@@ -67,6 +72,90 @@ props_dict = {
         "BooleanField",
         "ForeignKey",
         "ChoicesField",
+    ],
+    # Viewset sub props
+    "BigAutoField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+    ],
+    "CharField": [
+        "exact",
+        "in",
+        "icontains",
+        "isnull",
+    ],
+    "DateField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+        "isnull",
+    ],
+    "DateTimeField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+        "isnull",
+    ],
+    "DecimalField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+        "isnull",
+    ],
+    "IntegerField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+        "isnull",
+    ],
+    "PositiveIntegerField": [
+        "exact",
+        "in",
+        "gt",
+        "gte",
+        "lt",
+        "lte",
+        "range",
+        "isnull",
+    ],
+    "ChoicesField": [
+        "exact",
+        "in",
+        "icontains",
+        "isnull",
+    ],
+    "BooleanField": [
+        "exact",
+    ],
+    "ForeignKey": [
+        "exact",
+        "isnull",
+    ],
+    "ManyToManyField": [
+        "exact",
+        "in",
+        "isnull",
     ],
     # Especific props
     "choices_fields": [
@@ -112,7 +201,7 @@ def get_field_type(field):
     return field_type
 
 
-def get_prop(model, prop, str=False):
+def get_prop(model, prop, str=False, annotate_type=False):
     """
     Retorna uma lista de campos de um model baseado em uma propriedade.
 
@@ -137,9 +226,13 @@ def get_prop(model, prop, str=False):
         is_original_field = not hasattr(field, "field")
         if field_type in props_dict[prop] and is_original_field:
             if str:
-                field_str = f'"{field.name}",'
-                props.append(field_str)
+                name = f'"{field.name}",'
             else:
-                props.append(field.name)
+                name = field.name
+
+            if annotate_type:
+                props.append({"name": name, "type": field_type})
+            else:
+                props.append(name)
 
     return props
