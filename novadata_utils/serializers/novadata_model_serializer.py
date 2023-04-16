@@ -1,3 +1,4 @@
+from django.db.models.query import QuerySet
 from rest_framework import serializers
 from rest_framework.fields import empty
 
@@ -32,7 +33,11 @@ class NovadataModelSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         """Função para definir os campos de representação."""
-        if instance and not isinstance(instance, list):
+        if (
+            instance
+            and not isinstance(instance, list)
+            and not isinstance(instance, QuerySet)
+        ):
             default_return = super(
                 NovadataModelSerializer, self
             ).to_representation(instance)
