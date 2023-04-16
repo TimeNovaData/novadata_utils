@@ -23,7 +23,7 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
     search_fields: list = None
 
-    auto_search_fields: bool = False
+    auto_search_fields: bool = True
 
     relation_fields = [
         "OneToOneField",
@@ -33,35 +33,35 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
     def get_filterset_fields(self):
         """Retorna os campos de filtro."""
         model = self.serializer_class().Meta.model
-        self.filterset_fields = get_prop(
+        filterset_fields = get_prop(
             model,
             "filterset_fields",
             str=False,
         )
 
-        return self.filterset_fields
+        return filterset_fields
 
     def get_ordering_fields(self):
         """Retorna os campos de ordenação."""
         model = self.serializer_class().Meta.model
-        self.ordering_fields = get_prop(
+        ordering_fields = get_prop(
             model,
             "ordering_fields",
             str=False,
         )
 
-        return self.ordering_fields
+        return ordering_fields
 
     def get_search_fields(self):
         """Retorna os campos de busca."""
         model = self.serializer_class().Meta.model
-        self.search_fields = get_prop(
+        search_fields = get_prop(
             model,
             "search_fields",
             str=False,
         )
 
-        return self.search_fields
+        return search_fields
 
     def get_fk_fields(self):
         """Retorna os campos de relacionamento."""
@@ -98,7 +98,9 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
         return Response(
-            serializer.data, status=status.HTTP_201_CREATED, headers=headers
+            serializer.data,
+            status=status.HTTP_201_CREATED,
+            headers=headers,
         )
 
     def update(self, request, *args, **kwargs):
@@ -151,10 +153,10 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         """Método para executarmos ações ao iniciar a classe."""
         super().__init__(**kwargs)
         if not self.filterset_fields:
-            self.get_filterset_fields()
+            self.filterset_fields = self.get_filterset_fields()
 
         if not self.ordering_fields:
-            self.get_ordering_fields()
+            self.ordering_fields = self.get_ordering_fields()
 
         if self.auto_search_fields and not self.search_fields:
-            self.get_search_fields()
+            self.search_fields = self.get_search_fields()
