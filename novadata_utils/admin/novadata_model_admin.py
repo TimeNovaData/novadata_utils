@@ -1,15 +1,17 @@
 from functools import partial
 
+from advanced_filters.admin import AdminAdvancedFiltersMixin
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
-from import_export.admin import ImportExportModelAdmin
+from import_export.admin import ImportExportMixin
 
 from novadata_utils.functions import get_prop, transform_field
 
 
 class NovadataModelAdmin(
+    AdminAdvancedFiltersMixin,
+    ImportExportMixin,
     DjangoObjectActions,
-    ImportExportModelAdmin,
     admin.ModelAdmin,
 ):
     """

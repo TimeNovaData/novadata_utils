@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: novadata-utils
-Version: 0.2.4
+Version: 0.2.5
 Summary: novadata utils
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
@@ -30,6 +30,7 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
+    'advanced_filters',
     'django_admin_listfilter_dropdown',
     'django_object_actions',
     'import_export',
@@ -37,6 +38,16 @@ INSTALLED_APPS = [
     'rest_framework',
     ...
 ]
+```
+
+Urls.py principal:
+```python
+urlpatterns = [
+    ...
+    path('advanced_filters/', include('advanced_filters.urls')),
+    ...
+]
+```
 
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```

@@ -16,6 +16,7 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
+    'advanced_filters',
     'django_admin_listfilter_dropdown',
     'django_object_actions',
     'import_export',
@@ -23,6 +24,16 @@ INSTALLED_APPS = [
     'rest_framework',
     ...
 ]
+```
+
+Urls.py principal:
+```python
+urlpatterns = [
+    ...
+    path('advanced_filters/', include('advanced_filters.urls')),
+    ...
+]
+```
 
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
