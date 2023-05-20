@@ -24,6 +24,9 @@ INSTALLED_APPS = [
     'rest_framework',
     ...
 ]
+
+# Depois dos middlewares do django
+MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
 
 Urls.py principal:
@@ -35,8 +38,6 @@ urlpatterns = [
 ]
 ```
 
-MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
-```
 
 Rode os seguintes comandos:
 ```python
