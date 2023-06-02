@@ -14,7 +14,10 @@ class NovadataModelSerializer(serializers.ModelSerializer):
         retornar só os campos que foram passados.
         """
         fields = super().get_fields()
-        request = self.context.get("request")
+        request = self.context.get("request", None)
+        if not request or not request.query_params:
+            return fields
+
         param_fields = request.query_params.get("fields", None)
 
         if param_fields:
