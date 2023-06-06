@@ -64,7 +64,12 @@ def get_prop(model, prop, str=False, annotate_type=False):
         field_type = get_field_type(field)
 
         is_original_field = not hasattr(field, "field")
-        if field_type in props_dict[prop] and is_original_field:
+        is_sub_id_field = "_ptr" in field.name
+        if (
+            field_type in props_dict[prop]
+            and is_original_field
+            and not is_sub_id_field
+        ):
             if str:
                 name = f'"{field.name}",'
             else:
