@@ -53,6 +53,7 @@ def get_prop(model, prop, str=False, annotate_type=False):
             "DateField",
             "DateTimeField",
             "DecimalField",
+            "OneToOneField",
             "ForeignKey",
             "IntegerField" e
             "PositiveIntegerField".

@@ -9,6 +9,7 @@ props_dict = {
         "DateTimeField",
         "DecimalField",
         "ForeignKey",
+        "OneToOneField",
         "IntegerField",
         "PositiveIntegerField",
         "ChoicesField",
@@ -31,9 +32,11 @@ props_dict = {
         "ChoicesField",
     ],
     "autocomplete_fields": [
+        "OneToOneField",
         "ForeignKey",
     ],
     "list_select_related": [
+        "OneToOneField",
         "ForeignKey",
     ],
     "filter_horizontal": [
@@ -57,6 +60,7 @@ props_dict = {
         "BooleanField",
         "DateField",
         "DateTimeField",
+        "OneToOneField",
         "ForeignKey",
     ],
     "ordering_fields": [
@@ -68,6 +72,7 @@ props_dict = {
         "IntegerField",
         "PositiveIntegerField",
         "BooleanField",
+        "OneToOneField",
         "ForeignKey",
         "ChoicesField",
     ],
@@ -147,6 +152,10 @@ props_dict = {
         "exact",
     ],
     "ForeignKey": [
+        "exact",
+        "isnull",
+    ],
+    "OneToOneField": [
         "exact",
         "isnull",
     ],
