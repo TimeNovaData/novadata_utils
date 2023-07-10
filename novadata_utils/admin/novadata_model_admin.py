@@ -1,6 +1,9 @@
 from functools import partial
 
-from advanced_filters.admin import AdminAdvancedFiltersMixin
+from advanced_filters.admin import (
+    AdminAdvancedFiltersMixin,
+    AdvancedListFilters,
+)
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
 from import_export.admin import ImportExportMixin
@@ -40,6 +43,8 @@ class NovadataModelAdmin(
 
     exclude: list = []
 
+    advanced_filter_fields: list = []
+
     def get_list_display(self, request):
         """Retorna a lista de campos que estarão na listagem."""
         super().get_list_display(request)
@@ -68,7 +73,11 @@ class NovadataModelAdmin(
         """Retorna a lista de campos que estarão no filtro."""
         super().get_list_filter(request)
 
-        if not self.list_filter:
+        len_is_one = len(self.list_filter) == 1
+        is_advanced_filter = self.list_filter[0] == AdvancedListFilters
+        only_has_advanced_filter = len_is_one and is_advanced_filter
+
+        if not self.list_filter or only_has_advanced_filter:
             model = self.model
             foreign_keys = get_prop(model, "foreign_keys")
             choices_fields = get_prop(model, "choices_fields")
@@ -89,7 +98,7 @@ class NovadataModelAdmin(
             list_filter = list(map(transform_foreign_keys, list_filter_fields))
             list_filter = list(map(transform_choices_fields, list_filter))
 
-            return list_filter
+            return list(self.list_filter) + list_filter
         else:
             return self.list_filter
 
@@ -140,7 +149,18 @@ class NovadataModelAdmin(
 
         return exclude_fields
 
+    def get_advanced_filter_fields(self):
+        """Retorna a lista de campos que estarão no advanced filter."""
+        if not self.advanced_filter_fields:
+            model = self.model
+            advanced_filter_fields = get_prop(model, "advanced_filter_fields")
+
+            return advanced_filter_fields
+        else:
+            return self.advanced_filter_fields
+
     def __init__(self, *args, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""
         super().__init__(*args, **kwargs)
         self.filter_horizontal = self.get_filter_horizontal()
+        self.advanced_filter_fields = self.get_advanced_filter_fields()
