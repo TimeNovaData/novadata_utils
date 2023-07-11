@@ -30,6 +30,25 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         "ForeignKey",
     ]
 
+    list_select_related: list = []
+
+    def get_queryset(self):
+        """Define o queryset."""
+        model = self.serializer_class().Meta.model
+        return model.objects.select_related(
+            *self.list_select_related,
+        ).all()
+
+    def get_list_select_related(self):
+        """Retorna os campos do select_related."""
+        model = self.serializer_class().Meta.model
+        list_select_related = get_prop(
+            model,
+            "list_select_related",
+        )
+
+        return list_select_related
+
     def get_filterset_fields(self):
         """Retorna os campos de filtro."""
         model = self.serializer_class().Meta.model
@@ -175,3 +194,6 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
         if self.auto_search_fields and not self.search_fields:
             self.search_fields = self.get_search_fields()
+
+        if not self.list_select_related:
+            self.list_select_related = self.get_list_select_related()
