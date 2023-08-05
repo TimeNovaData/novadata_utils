@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.db import models
 
 
@@ -14,7 +14,7 @@ class NovadataModel(models.Model):
     )
 
     usuario_criacao = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         on_delete=models.SET_NULL,
         verbose_name="Usuário de criação",
         blank=True,
@@ -22,7 +22,7 @@ class NovadataModel(models.Model):
     )
 
     usuario_atualizacao = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL,
         related_name="%(class)s_requests_modified",
         verbose_name="Usuário de atualização",
         on_delete=models.SET_NULL,

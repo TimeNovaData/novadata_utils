@@ -16,7 +16,8 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
-    'django-admin-list-filter-dropdown',
+    'advanced_filters',
+    'django_admin_listfilter_dropdown',
     'django_object_actions',
     'import_export',
     'novadata_utils',
@@ -24,8 +25,19 @@ INSTALLED_APPS = [
     ...
 ]
 
+# Depois dos middlewares do django
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
+
+Urls.py principal:
+```python
+urlpatterns = [
+    ...
+    path('advanced_filters/', include('advanced_filters.urls')),
+    ...
+]
+```
+
 
 Rode os seguintes comandos:
 ```python

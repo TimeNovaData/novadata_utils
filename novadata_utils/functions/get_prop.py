@@ -1,78 +1,6 @@
 from novadata_utils.models import NovadataModel
 
-# ChoicesField é um CharField com choices
-props_dict = {
-    # Admin props
-    "list_display": [
-        "BigAutoField",
-        "BooleanField",
-        "CharField",
-        "DateField",
-        "DateTimeField",
-        "DecimalField",
-        "ForeignKey",
-        "IntegerField",
-        "PositiveIntegerField",
-        "ChoicesField",
-    ],
-    "search_fields": [
-        "BigAutoField",
-        "CharField",
-        "DateField",
-        "DateTimeField",
-        "DecimalField",
-        "IntegerField",
-        "PositiveIntegerField",
-        "ChoicesField",
-    ],
-    "list_filter": [
-        "BooleanField",
-        "DateField",
-        "DateTimeField",
-        "ForeignKey",
-        "ChoicesField",
-    ],
-    "autocomplete_fields": [
-        "ForeignKey",
-    ],
-    "list_select_related": [
-        "ForeignKey",
-    ],
-    "filter_horizontal": [
-        "ManyToManyField",
-    ],
-    # Generic props
-    "foreign_keys": [
-        "ForeignKey",
-    ],
-    "many_to_many": [
-        "ManyToManyField",
-    ],
-    # Viewset props
-    "filterset_fields": [
-        "BooleanField",
-        "DateField",
-        "DateTimeField",
-        "ForeignKey",
-        "ChoicesField",
-    ],
-    "ordering_fields": [
-        "BigAutoField",
-        "CharField",
-        "DateField",
-        "DateTimeField",
-        "DecimalField",
-        "IntegerField",
-        "PositiveIntegerField",
-        "BooleanField",
-        "ForeignKey",
-        "ChoicesField",
-    ],
-    # Especific props
-    "choices_fields": [
-        "ChoicesField",
-    ],
-}
+from .props_dict import props_dict
 
 
 def get_fields(model):
@@ -112,7 +40,7 @@ def get_field_type(field):
     return field_type
 
 
-def get_prop(model, prop, str=False):
+def get_prop(model, prop, str=False, annotate_type=False):
     """
     Retorna uma lista de campos de um model baseado em uma propriedade.
 
@@ -125,6 +53,7 @@ def get_prop(model, prop, str=False):
             "DateField",
             "DateTimeField",
             "DecimalField",
+            "OneToOneField",
             "ForeignKey",
             "IntegerField" e
             "PositiveIntegerField".
@@ -135,11 +64,20 @@ def get_prop(model, prop, str=False):
         field_type = get_field_type(field)
 
         is_original_field = not hasattr(field, "field")
-        if field_type in props_dict[prop] and is_original_field:
+        is_sub_id_field = "_ptr" in field.name
+        if (
+            field_type in props_dict[prop]
+            and is_original_field
+            and not is_sub_id_field
+        ):
             if str:
-                field_str = f'"{field.name}",'
-                props.append(field_str)
+                name = f'"{field.name}",'
             else:
-                props.append(field.name)
+                name = field.name
+
+            if annotate_type:
+                props.append({"name": name, "type": field_type})
+            else:
+                props.append(name)
 
     return props
