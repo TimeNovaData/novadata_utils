@@ -1,4 +1,4 @@
-from ..redirect import reverse_lazy_plus
+from novadata_utils.redirect import reverse_lazy_plus
 
 
 def make_item_breadcrumb(item: dict) -> dict:

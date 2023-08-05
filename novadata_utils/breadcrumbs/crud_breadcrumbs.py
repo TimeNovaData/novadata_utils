@@ -1,4 +1,4 @@
-from ..utils import camel_to_snake_case
+from novadata_utils.utils import camel_to_snake_case
 
 
 def create_breadcrumb(klass, name=None, url_params=[], get_params={}):
