@@ -13,7 +13,13 @@ novadata_utils/admin/__init__.py
 novadata_utils/admin/novadata_model_admin.py
 novadata_utils/auth/__init__.py
 novadata_utils/auth/login_username_email.py
+novadata_utils/breadcrumbs/__init__.py
+novadata_utils/breadcrumbs/crud_breadcrumbs.py
+novadata_utils/breadcrumbs/items.py
+novadata_utils/breadcrumbs/make_breadcrumb.py
+novadata_utils/breadcrumbs/make_item_breadcrumb.py
 novadata_utils/forms/__init__.py
+novadata_utils/forms/gerenciar_inline_form.py
 novadata_utils/functions/__init__.py
 novadata_utils/functions/get_prop.py
 novadata_utils/functions/props_dict.py
@@ -34,6 +40,11 @@ novadata_utils/serializers/novadata_model_serializer.py
 novadata_utils/signals/__init__.py
 novadata_utils/templatetags/__init__.py
 novadata_utils/tests/__init__.py
+novadata_utils/utils/__init__.py
+novadata_utils/utils/camel_to_snake_case.py
 novadata_utils/views/__init__.py
+novadata_utils/views/novadata_view.py
 novadata_utils/viewsets/__init__.py
 novadata_utils/viewsets/novadata_model_viewset.py
+novadata_utils/viewsets/filters/__init__.py
+novadata_utils/viewsets/filters/property_search_filter.py
