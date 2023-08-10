@@ -179,7 +179,9 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
                 print(f"Não passou {field_name}")
 
         self.perform_update(serializer)
-        serializer.instance.save()
+
+        # Estava salvando o objeto duas vezes.
+        # serializer.instance.save()
 
         return Response(serializer.data)
 
