@@ -51,8 +51,9 @@ class NovadataModelAdmin(
         if not request:
             request = get_current_request()
         exclude_fields = self.get_exclude(request)
+        list_props_copy = list_props.copy()
 
-        for field in list_props:
+        for field in list_props_copy:
             if field in exclude_fields:
                 list_props.remove(field)
 
