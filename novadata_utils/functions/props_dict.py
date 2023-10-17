@@ -13,6 +13,7 @@ props_dict = {
         "IntegerField",
         "PositiveIntegerField",
         "ChoicesField",
+        "SlugField",
     ],
     "search_fields": [
         "BigAutoField",
@@ -23,6 +24,7 @@ props_dict = {
         "IntegerField",
         "PositiveIntegerField",
         "ChoicesField",
+        "SlugField",
     ],
     "list_filter": [
         "BooleanField",
@@ -54,6 +56,7 @@ props_dict = {
         "IntegerField",
         "PositiveIntegerField",
         "ChoicesField",
+        "SlugField",
     ],
     # Generic props
     "foreign_keys": [
@@ -66,6 +69,7 @@ props_dict = {
     "filterset_fields": [
         "BigAutoField",
         "CharField",
+        "SlugField",
         "DecimalField",
         "IntegerField",
         "PositiveIntegerField",
@@ -79,6 +83,7 @@ props_dict = {
     "ordering_fields": [
         "BigAutoField",
         "CharField",
+        "SlugField",
         "DateField",
         "DateTimeField",
         "DecimalField",
@@ -100,6 +105,12 @@ props_dict = {
         "range",
     ],
     "CharField": [
+        "exact",
+        "in",
+        "icontains",
+        "isnull",
+    ],
+    "SlugField": [
         "exact",
         "in",
         "icontains",
