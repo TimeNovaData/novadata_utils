@@ -7,6 +7,7 @@ from advanced_filters.admin import (
 from crum import get_current_request
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
+from import_export import fields, resources
 from import_export.admin import ImportExportMixin
 
 from novadata_utils.functions import get_prop, transform_field
@@ -177,6 +178,57 @@ class NovadataModelAdmin(
             return self.remove_fields_of_prop(advanced_filter_fields)
         else:
             return self.advanced_filter_fields
+
+    def get_resource_classes(self):
+        """Retorna as classes de recursos para exportação."""
+        if not hasattr(self, "export_widgets"):
+            return super().get_resource_classes()
+
+        Meta = {
+            "Meta": type(
+                "Meta",
+                (),
+                {
+                    "model": self.model,
+                    "name": "Com IDs",
+                },
+            )
+        }
+
+        ComIdsResource = type(
+            "ComIdsResource",
+            (resources.ModelResource,),
+            Meta,
+        )
+
+        export_fields = {
+            key: fields.Field(
+                column_name=key,
+                attribute=key,
+                widget=self.export_widgets.get(key),
+            )
+            for key in self.export_widgets.keys()
+        }
+
+        ComNomesResource = type(
+            "ComNomesResource",
+            (ComIdsResource,),
+            {
+                "Meta": type(
+                    "Meta",
+                    (),
+                    {
+                        "name": "Com nomes",
+                    },
+                ),
+                **export_fields,
+            },
+        )
+
+        return [
+            ComIdsResource,
+            ComNomesResource,
+        ]
 
     def __init__(self, *args, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""
