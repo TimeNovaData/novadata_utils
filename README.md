@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'django_object_actions',
     'import_export',
     'novadata_utils',
+    'rangefilter',
     'rest_framework',
     ...
 ]

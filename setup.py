@@ -19,6 +19,7 @@ setup(
         "django",
         "djangorestframework",
         "django-admin-list-filter-dropdown",
+        "django-admin-rangefilter",
         "django-advanced-filters",
         "django-crum",
         "django-import-export",

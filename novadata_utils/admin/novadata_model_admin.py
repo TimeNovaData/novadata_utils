@@ -100,6 +100,8 @@ class NovadataModelAdmin(
             model = self.model
             foreign_keys = get_prop(model, "foreign_keys")
             choices_fields = get_prop(model, "choices_fields")
+            date_fields = get_prop(model, "dates")
+            numeric_fields = get_prop(model, "numerics")
 
             list_filter_fields = get_prop(model, "list_filter")
 
@@ -113,9 +115,21 @@ class NovadataModelAdmin(
                 choices_fields,
                 "choices_fields",
             )
+            transform_dates = partial(
+                transform_field,
+                date_fields,
+                "dates",
+            )
+            transform_numerics = partial(
+                transform_field,
+                numeric_fields,
+                "numerics",
+            )
 
             list_filter = list(map(transform_foreign_keys, list_filter_fields))
             list_filter = list(map(transform_choices_fields, list_filter))
+            list_filter = list(map(transform_dates, list_filter))
+            list_filter = list(map(transform_numerics, list_filter))
             concat_list_filter = list(self.list_filter) + list_filter
 
             return self.remove_fields_of_prop(concat_list_filter, request)

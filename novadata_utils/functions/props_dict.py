@@ -32,6 +32,9 @@ props_dict = {
         "DateTimeField",
         "ForeignKey",
         "ChoicesField",
+        "DecimalField",
+        "IntegerField",
+        "PositiveIntegerField",
     ],
     "autocomplete_fields": [
         "OneToOneField",
@@ -61,6 +64,15 @@ props_dict = {
     # Generic props
     "foreign_keys": [
         "ForeignKey",
+    ],
+    "dates": [
+        "DateField",
+        "DateTimeField",
+    ],
+    "numerics": [
+        "DecimalField",
+        "IntegerField",
+        "PositiveIntegerField",
     ],
     "many_to_many": [
         "ManyToManyField",

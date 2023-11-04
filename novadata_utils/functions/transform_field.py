@@ -2,10 +2,16 @@ from django_admin_listfilter_dropdown.filters import (
     ChoiceDropdownFilter,
     RelatedOnlyDropdownFilter,
 )
+from rangefilter.filters import (
+    DateRangeQuickSelectListFilterBuilder,
+    NumericRangeFilterBuilder,
+)
 
 filters = {
     "foreign_keys": RelatedOnlyDropdownFilter,
     "choices_fields": ChoiceDropdownFilter,
+    "dates": DateRangeQuickSelectListFilterBuilder(),
+    "numerics": NumericRangeFilterBuilder(),
 }
 
 
