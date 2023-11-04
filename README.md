@@ -41,11 +41,6 @@ urlpatterns = [
 ]
 ```
 
-
-Run migrations:
-```python
-python manage.py makemigrations
-python manage.py migrate
-```
-
 ## Features
+Access the [docs](https://novadata-utils-docs.readthedocs.io/en/latest/usage.html#installation)
+to see the features and how to use them.
