@@ -25,12 +25,12 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
 
     auto_search_fields: bool = True
 
+    list_select_related: list = None
+
     relation_fields = [
         "OneToOneField",
         "ForeignKey",
     ]
-
-    list_select_related: list = []
 
     def get_queryset(self):
         """Define o queryset."""
@@ -38,16 +38,6 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
         return model.objects.select_related(
             *self.list_select_related,
         ).all()
-
-    def get_list_select_related(self):
-        """Retorna os campos do select_related."""
-        model = self.serializer_class().Meta.model
-        list_select_related = get_prop(
-            model,
-            "list_select_related",
-        )
-
-        return list_select_related
 
     def get_filterset_fields(self):
         """Retorna os campos de filtro."""
@@ -96,6 +86,16 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
             dict_search_fields[name] = sub_props
 
         return dict_search_fields
+
+    def get_list_select_related(self):
+        """Retorna os campos do select_related."""
+        model = self.serializer_class().Meta.model
+        list_select_related = get_prop(
+            model,
+            "list_select_related",
+        )
+
+        return list_select_related
 
     def get_fk_fields(self):
         """Retorna os campos de relacionamento."""
@@ -179,7 +179,9 @@ class NovadataModelViewSet(viewsets.ModelViewSet):
                 print(f"Não passou {field_name}")
 
         self.perform_update(serializer)
-        serializer.instance.save()
+
+        # Estava salvando o objeto duas vezes.
+        # serializer.instance.save()
 
         return Response(serializer.data)
 

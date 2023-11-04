@@ -1,13 +1,15 @@
 # novadata utils
-Pacote para facilitar o seu dia a dia como programador Django.
+Package to facilitate your day to day as a Django developer.
 
 ## Getting Started
+Follow the step by step below to install and configure the package.
 
-### Dependências
-Django
-Django Rest Framework
+### Dependencies
+Depends on the following packages (which will be installed automatically):
 
-#### Installation
+Django | Django Rest Framework | Django Advanced Filters | Django Admin List Filter Dropdown | Django Object Actions | Django Import Export | Django Crum.
+
+### Installation and configuration
 ```shell
 pip install novadata-utils
 ```
@@ -21,15 +23,16 @@ INSTALLED_APPS = [
     'django_object_actions',
     'import_export',
     'novadata_utils',
+    'rangefilter',
     'rest_framework',
     ...
 ]
 
-# Depois dos middlewares do django
+# After Django middlewares
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
 
-Urls.py principal:
+Main urls.py:
 ```python
 urlpatterns = [
     ...
@@ -39,7 +42,7 @@ urlpatterns = [
 ```
 
 
-Rode os seguintes comandos:
+Run migrations:
 ```python
 python manage.py makemigrations
 python manage.py migrate

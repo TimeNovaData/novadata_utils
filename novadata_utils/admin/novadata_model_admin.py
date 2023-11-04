@@ -4,8 +4,10 @@ from advanced_filters.admin import (
     AdminAdvancedFiltersMixin,
     AdvancedListFilters,
 )
+from crum import get_current_request
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
+from import_export import fields, resources
 from import_export.admin import ImportExportMixin
 
 from novadata_utils.functions import get_prop, transform_field
@@ -45,6 +47,23 @@ class NovadataModelAdmin(
 
     advanced_filter_fields: list = []
 
+    def remove_fields_of_prop(self, list_props: list, request=None):
+        """Remove os campos de uma propriedade com base no exclude."""
+        if not request:
+            request = get_current_request()
+        exclude_fields = self.get_exclude(request)
+        list_props_copy = list_props.copy()
+
+        for field in list_props_copy:
+            if field in exclude_fields:
+                list_props.remove(field)
+
+            is_tuple = isinstance(field, tuple)
+            if is_tuple and field[0] in exclude_fields:
+                list_props.remove(field)
+
+        return list_props
+
     def get_list_display(self, request):
         """Retorna a lista de campos que estarão na listagem."""
         super().get_list_display(request)
@@ -53,7 +72,7 @@ class NovadataModelAdmin(
             model = self.model
             list_display = get_prop(model, "list_display")
 
-            return list_display
+            return self.remove_fields_of_prop(list_display, request)
         else:
             return self.list_display
 
@@ -65,7 +84,7 @@ class NovadataModelAdmin(
             model = self.model
             search_fields = get_prop(model, "search_fields")
 
-            return search_fields
+            return self.remove_fields_of_prop(search_fields, request)
         else:
             return self.search_fields
 
@@ -81,6 +100,8 @@ class NovadataModelAdmin(
             model = self.model
             foreign_keys = get_prop(model, "foreign_keys")
             choices_fields = get_prop(model, "choices_fields")
+            date_fields = get_prop(model, "dates")
+            numeric_fields = get_prop(model, "numerics")
 
             list_filter_fields = get_prop(model, "list_filter")
 
@@ -94,11 +115,24 @@ class NovadataModelAdmin(
                 choices_fields,
                 "choices_fields",
             )
+            transform_dates = partial(
+                transform_field,
+                date_fields,
+                "dates",
+            )
+            transform_numerics = partial(
+                transform_field,
+                numeric_fields,
+                "numerics",
+            )
 
             list_filter = list(map(transform_foreign_keys, list_filter_fields))
             list_filter = list(map(transform_choices_fields, list_filter))
+            list_filter = list(map(transform_dates, list_filter))
+            list_filter = list(map(transform_numerics, list_filter))
+            concat_list_filter = list(self.list_filter) + list_filter
 
-            return list(self.list_filter) + list_filter
+            return self.remove_fields_of_prop(concat_list_filter, request)
         else:
             return self.list_filter
 
@@ -110,7 +144,7 @@ class NovadataModelAdmin(
             model = self.model
             autocomplete_fields = get_prop(model, "autocomplete_fields")
 
-            return autocomplete_fields
+            return self.remove_fields_of_prop(autocomplete_fields, request)
         else:
             return self.autocomplete_fields
 
@@ -122,7 +156,7 @@ class NovadataModelAdmin(
             model = self.model
             list_select_related = get_prop(model, "list_select_related")
 
-            return list_select_related
+            return self.remove_fields_of_prop(list_select_related, request)
         else:
             return self.list_select_related
 
@@ -132,7 +166,7 @@ class NovadataModelAdmin(
             model = self.model
             filter_horizontal = get_prop(model, "filter_horizontal")
 
-            return filter_horizontal
+            return self.remove_fields_of_prop(filter_horizontal)
         else:
             return self.filter_horizontal
 
@@ -155,9 +189,60 @@ class NovadataModelAdmin(
             model = self.model
             advanced_filter_fields = get_prop(model, "advanced_filter_fields")
 
-            return advanced_filter_fields
+            return self.remove_fields_of_prop(advanced_filter_fields)
         else:
             return self.advanced_filter_fields
+
+    def get_resource_classes(self):
+        """Retorna as classes de recursos para exportação."""
+        if not hasattr(self, "export_widgets"):
+            return super().get_resource_classes()
+
+        Meta = {
+            "Meta": type(
+                "Meta",
+                (),
+                {
+                    "model": self.model,
+                    "name": "Com IDs",
+                },
+            )
+        }
+
+        ComIdsResource = type(
+            "ComIdsResource",
+            (resources.ModelResource,),
+            Meta,
+        )
+
+        export_fields = {
+            key: fields.Field(
+                column_name=key,
+                attribute=key,
+                widget=self.export_widgets.get(key),
+            )
+            for key in self.export_widgets.keys()
+        }
+
+        ComNomesResource = type(
+            "ComNomesResource",
+            (ComIdsResource,),
+            {
+                "Meta": type(
+                    "Meta",
+                    (),
+                    {
+                        "name": "Com nomes",
+                    },
+                ),
+                **export_fields,
+            },
+        )
+
+        return [
+            ComIdsResource,
+            ComNomesResource,
+        ]
 
     def __init__(self, *args, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""
