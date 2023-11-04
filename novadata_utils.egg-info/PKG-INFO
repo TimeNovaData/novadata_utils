@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: novadata-utils
-Version: 0.2.9
+Version: 0.3
 Summary: novadata utils
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django_object_actions',
     'import_export',
     'novadata_utils',
+    'rangefilter',
     'rest_framework',
     ...
 ]
