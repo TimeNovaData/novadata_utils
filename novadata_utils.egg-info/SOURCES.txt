@@ -44,6 +44,7 @@ novadata_utils/tests/__init__.py
 novadata_utils/utils/__init__.py
 novadata_utils/utils/camel_to_snake_case.py
 novadata_utils/views/__init__.py
+novadata_utils/views/base_site.py
 novadata_utils/views/novadata_view.py
 novadata_utils/viewsets/__init__.py
 novadata_utils/viewsets/novadata_model_viewset.py
