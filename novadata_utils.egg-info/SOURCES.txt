@@ -27,6 +27,7 @@ novadata_utils/functions/transform_field.py
 novadata_utils/managers/__init__.py
 novadata_utils/middlewares/__init__.py
 novadata_utils/migrations/0001_initial.py
+novadata_utils/migrations/0002_alter_novadatamodel_usuario_criacao.py
 novadata_utils/migrations/__init__.py
 novadata_utils/models/__init__.py
 novadata_utils/models/abstract_novadata_model.py
