@@ -1,5 +1,5 @@
 LICENSE
-README.md
+README.rst
 setup.py
 novadata_utils/__init__.py
 novadata_utils/apps.py

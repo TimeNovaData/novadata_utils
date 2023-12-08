@@ -1,6 +1,6 @@
 from setuptools import find_packages, setup
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open("README.rst", "r", encoding="utf-8") as fh:
     readme = fh.read()
 
 setup(
@@ -10,7 +10,7 @@ setup(
     license="MIT License",
     author="Flávio Silva",
     long_description=readme,
-    long_description_content_type="text/markdown",
+    long_description_content_type="text/x-rst",
     author_email="flavio.nogueira.profissional@gmail.com",
     keywords="Django, utils, ndt, novadata, nova data, nova, data",
     description="novadata utils",
