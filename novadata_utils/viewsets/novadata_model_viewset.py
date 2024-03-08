@@ -1,12 +1,19 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import filters, status, viewsets
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from novadata_utils.functions import get_prop, props_dict
 
 
+class CustomPagination(PageNumberPagination):
+    page_size_query_param = "page_size"
+
+
 class NovadataModelViewSet(viewsets.ModelViewSet):
+    pagination_class = CustomPagination
+
     permission_classes = [
         IsAuthenticated,
     ]
