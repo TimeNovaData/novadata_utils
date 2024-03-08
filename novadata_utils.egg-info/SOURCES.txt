@@ -49,3 +49,4 @@ novadata_utils/views/base_site.py
 novadata_utils/views/novadata_view.py
 novadata_utils/viewsets/__init__.py
 novadata_utils/viewsets/novadata_model_viewset.py
+novadata_utils/viewsets/novadata_pagination.py
