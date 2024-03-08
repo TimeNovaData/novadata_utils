@@ -4,7 +4,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
 from novadata_utils.functions import get_prop, props_dict
-from novadata_utils.viewsets import NovadataPagination
+
+from .novadata_pagination import NovadataPagination
 
 
 class NovadataModelViewSet(viewsets.ModelViewSet):
