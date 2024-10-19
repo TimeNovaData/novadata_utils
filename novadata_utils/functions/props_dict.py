@@ -47,20 +47,6 @@ props_dict = {
     "filter_horizontal": [
         "ManyToManyField",
     ],
-    "advanced_filter_fields": [
-        "BigAutoField",
-        "BooleanField",
-        "CharField",
-        "DateField",
-        "DateTimeField",
-        "DecimalField",
-        "ForeignKey",
-        "OneToOneField",
-        "IntegerField",
-        "PositiveIntegerField",
-        "ChoicesField",
-        "SlugField",
-    ],
     # Generic props
     "foreign_keys": [
         "ForeignKey",
