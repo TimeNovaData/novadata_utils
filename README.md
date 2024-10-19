@@ -7,7 +7,7 @@ Follow the step by step below to install and configure the package.
 ### Dependencies
 Depends on the following packages (which will be installed automatically):
 
-Django | Django Rest Framework | Django Advanced Filters | Django Admin List Filter Dropdown | Django Object Actions | Django Import Export | Django Crum.
+Django | Django Rest Framework | Django Admin List Filter Dropdown | Django Object Actions | Django Import Export | Django Crum.
 
 ### Installation and configuration
 ```shell
@@ -18,7 +18,6 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
-    'advanced_filters',
     'django_admin_listfilter_dropdown',
     'django_object_actions',
     'import_export',
@@ -30,15 +29,6 @@ INSTALLED_APPS = [
 
 # After Django middlewares
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
-```
-
-Main urls.py:
-```python
-urlpatterns = [
-    ...
-    path('advanced_filters/', include('advanced_filters.urls')),
-    ...
-]
 ```
 
 ## Features

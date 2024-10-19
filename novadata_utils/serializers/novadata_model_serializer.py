@@ -6,6 +6,30 @@ from rest_framework.fields import empty
 class NovadataModelSerializer(serializers.ModelSerializer):
     representation_fields: list = []
 
+    def to_representation(self, instance):
+        """Função para definir os campos de representação."""
+        if (
+            instance
+            and not isinstance(instance, list)
+            and not isinstance(instance, QuerySet)
+        ):
+            default_return = super(
+                NovadataModelSerializer, self
+            ).to_representation(instance)
+
+            if self.representation_fields:
+                only_fields_representation = filter(
+                    lambda field: field[0] in self.fields,
+                    self.representation_fields,
+                )
+
+                for field_name, serializer in only_fields_representation:
+                    default_return[field_name] = serializer(
+                        getattr(instance, field_name)
+                    ).data
+
+            return default_return
+
     def get_fields(self):
         """
         Função para retornar só uma parte dos campos.
@@ -33,25 +57,6 @@ class NovadataModelSerializer(serializers.ModelSerializer):
             }
 
         return fields
-
-    def to_representation(self, instance):
-        """Função para definir os campos de representação."""
-        if (
-            instance
-            and not isinstance(instance, list)
-            and not isinstance(instance, QuerySet)
-        ):
-            default_return = super(
-                NovadataModelSerializer, self
-            ).to_representation(instance)
-
-            if self.representation_fields:
-                for field_name, serializer in self.representation_fields:
-                    default_return[field_name] = serializer(
-                        getattr(instance, field_name)
-                    ).data
-
-            return default_return
 
     def __init__(self, instance=None, data=empty, **kwargs):
         """Método para executarmos ações ao iniciar a classe."""

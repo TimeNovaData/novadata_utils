@@ -1,3 +1,4 @@
+from crum import get_current_user
 from django.conf import settings
 from django.db import models
 
@@ -15,16 +16,17 @@ class NovadataModel(models.Model):
 
     usuario_criacao = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.SET_NULL,
         verbose_name="Usuário de criação",
+        related_name="%(class)s_requests_created",
+        on_delete=models.SET_NULL,
         blank=True,
         null=True,
     )
 
     usuario_atualizacao = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        related_name="%(class)s_requests_modified",
         verbose_name="Usuário de atualização",
+        related_name="%(class)s_requests_modified",
         on_delete=models.SET_NULL,
         blank=True,
         null=True,
@@ -32,8 +34,6 @@ class NovadataModel(models.Model):
 
     def save(self, *args, **kwargs):
         """Sobrescrita do método save para realizarmos ações personalizadas."""
-        from crum import get_current_user
-
         user = get_current_user()
         if user and not user.pk:
             user = None

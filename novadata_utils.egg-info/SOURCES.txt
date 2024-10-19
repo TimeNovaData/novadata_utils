@@ -27,6 +27,7 @@ novadata_utils/functions/transform_field.py
 novadata_utils/managers/__init__.py
 novadata_utils/middlewares/__init__.py
 novadata_utils/migrations/0001_initial.py
+novadata_utils/migrations/0002_alter_novadatamodel_usuario_criacao.py
 novadata_utils/migrations/__init__.py
 novadata_utils/models/__init__.py
 novadata_utils/models/abstract_novadata_model.py
@@ -44,6 +45,8 @@ novadata_utils/tests/__init__.py
 novadata_utils/utils/__init__.py
 novadata_utils/utils/camel_to_snake_case.py
 novadata_utils/views/__init__.py
+novadata_utils/views/base_site.py
 novadata_utils/views/novadata_view.py
 novadata_utils/viewsets/__init__.py
 novadata_utils/viewsets/novadata_model_viewset.py
+novadata_utils/viewsets/novadata_pagination.py

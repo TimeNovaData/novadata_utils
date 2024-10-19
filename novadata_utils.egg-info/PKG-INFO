@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: novadata-utils
-Version: 0.3
+Name: novadata_utils
+Version: 0.3.8
 Summary: novadata utils
 Home-page: https://github.com/TimeNovaData/novadata_utils/
 Author: Flávio Silva
@@ -10,6 +10,13 @@ Project-URL: GitHub, https://github.com/TimeNovaData/novadata_utils/
 Keywords: Django,utils,ndt,novadata,nova data,nova,data
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: django
+Requires-Dist: djangorestframework
+Requires-Dist: django-admin-list-filter-dropdown
+Requires-Dist: django-admin-rangefilter
+Requires-Dist: django-crum
+Requires-Dist: django-import-export
+Requires-Dist: django-object-actions>=4.0.0
 
 # novadata utils
 Package to facilitate your day to day as a Django developer.
@@ -20,7 +27,7 @@ Follow the step by step below to install and configure the package.
 ### Dependencies
 Depends on the following packages (which will be installed automatically):
 
-Django | Django Rest Framework | Django Advanced Filters | Django Admin List Filter Dropdown | Django Object Actions | Django Import Export | Django Crum.
+Django | Django Rest Framework | Django Admin List Filter Dropdown | Django Object Actions | Django Import Export | Django Crum.
 
 ### Installation and configuration
 ```shell
@@ -31,7 +38,6 @@ Settings.py:
 ```python
 INSTALLED_APPS = [
     ...
-    'advanced_filters',
     'django_admin_listfilter_dropdown',
     'django_object_actions',
     'import_export',
@@ -45,20 +51,6 @@ INSTALLED_APPS = [
 MIDDLEWARE += ('crum.CurrentRequestUserMiddleware',)
 ```
 
-Main urls.py:
-```python
-urlpatterns = [
-    ...
-    path('advanced_filters/', include('advanced_filters.urls')),
-    ...
-]
-```
-
-
-Run migrations:
-```python
-python manage.py makemigrations
-python manage.py migrate
-```
-
 ## Features
+Access the [docs](https://novadata-utils-docs.readthedocs.io/en/latest/usage.html#installation)
+to see the features and how to use them.
