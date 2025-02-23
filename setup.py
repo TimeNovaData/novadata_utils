@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setup(
     name="novadata_utils",
-    version="0.3.8",
+    version="0.4",
     url="https://github.com/TimeNovaData/novadata_utils/",
     license="MIT License",
     author="Flávio Silva",
@@ -21,7 +21,7 @@ setup(
         "django-admin-list-filter-dropdown",
         "django-admin-rangefilter",
         "django-crum",
-        "django-import-export",
+        "django-import-export>=4.0.7",
         "django-object-actions>=4.0.0",
     ],
     project_urls={

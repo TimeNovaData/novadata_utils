@@ -1,9 +1,5 @@
 from functools import partial
 
-from advanced_filters.admin import (
-    AdminAdvancedFiltersMixin,
-    AdvancedListFilters,
-)
 from crum import get_current_request
 from django.contrib import admin
 from django_object_actions import DjangoObjectActions
@@ -14,7 +10,6 @@ from novadata_utils.functions import get_prop, transform_field
 
 
 class NovadataModelAdmin(
-    AdminAdvancedFiltersMixin,
     ImportExportMixin,
     DjangoObjectActions,
     admin.ModelAdmin,
@@ -44,8 +39,6 @@ class NovadataModelAdmin(
     filter_horizontal: list = []
 
     exclude: list = []
-
-    advanced_filter_fields: list = []
 
     def remove_fields_of_prop(self, list_props: list, request=None):
         """Remove os campos de uma propriedade com base no exclude."""
@@ -92,11 +85,7 @@ class NovadataModelAdmin(
         """Retorna a lista de campos que estarão no filtro."""
         super().get_list_filter(request)
 
-        len_is_one = len(self.list_filter) == 1
-        is_advanced_filter = self.list_filter[0] == AdvancedListFilters
-        only_has_advanced_filter = len_is_one and is_advanced_filter
-
-        if not self.list_filter or only_has_advanced_filter:
+        if not self.list_filter:
             model = self.model
             foreign_keys = get_prop(model, "foreign_keys")
             choices_fields = get_prop(model, "choices_fields")
@@ -133,8 +122,7 @@ class NovadataModelAdmin(
             concat_list_filter = list(self.list_filter) + list_filter
 
             return self.remove_fields_of_prop(concat_list_filter, request)
-        else:
-            return self.list_filter
+        return self.list_filter
 
     def get_autocomplete_fields(self, request):
         """Retorna a lista de campos que estarão no autocomplete."""
@@ -183,20 +171,10 @@ class NovadataModelAdmin(
 
         return exclude_fields
 
-    def get_advanced_filter_fields(self):
-        """Retorna a lista de campos que estarão no advanced filter."""
-        if not self.advanced_filter_fields:
-            model = self.model
-            advanced_filter_fields = get_prop(model, "advanced_filter_fields")
-
-            return self.remove_fields_of_prop(advanced_filter_fields)
-        else:
-            return self.advanced_filter_fields
-
-    def get_resource_classes(self):
+    def get_resource_classes(self, request):
         """Retorna as classes de recursos para exportação."""
         if not hasattr(self, "export_widgets"):
-            return super().get_resource_classes()
+            return super().get_resource_classes(request)
 
         Meta = {
             "Meta": type(
@@ -248,4 +226,3 @@ class NovadataModelAdmin(
         """Método para executarmos ações ao iniciar a classe."""
         super().__init__(*args, **kwargs)
         self.filter_horizontal = self.get_filter_horizontal()
-        self.advanced_filter_fields = self.get_advanced_filter_fields()
