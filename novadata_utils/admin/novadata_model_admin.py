@@ -171,10 +171,10 @@ class NovadataModelAdmin(
 
         return exclude_fields
 
-    def get_resource_classes(self):
+    def get_resource_classes(self, request):
         """Retorna as classes de recursos para exportação."""
         if not hasattr(self, "export_widgets"):
-            return super().get_resource_classes()
+            return super().get_resource_classes(request)
 
         Meta = {
             "Meta": type(
